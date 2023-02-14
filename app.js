@@ -180,11 +180,16 @@ const listItems = document.querySelectorAll("span");
 listItems.forEach((item) => {
   item.addEventListener("click", function (e) {
     if (e.shiftKey) {
+      e.target.previousElementSibling.classList.toggle("checked");
       selectEnd = findNumberInString(e.target.parentNode.firstElementChild.id);
-      console.log("select end", selectEnd);
       if (!selectStart || selectEnd < selectStart) {
         selectStart = 0;
-        console.log(selectStart);
+      }
+      if (selectStart === selectEnd) {
+        selectStart = findNumberInString(
+          e.target.closest("li").parentElement.querySelector(".checked").id
+        );
+        console.log(e.target.closest("li").parentElement);
       }
       const itemsNeedsToCheck = Array.from(listItems).slice(
         selectStart,
@@ -194,10 +199,10 @@ listItems.forEach((item) => {
         item.previousElementSibling.checked = true;
       });
     } else {
+      e.target.previousElementSibling.classList.toggle("checked");
       selectStart = findNumberInString(
         e.target.parentNode.firstElementChild.id
       );
-      console.log("select start", selectStart);
     }
   });
 });
